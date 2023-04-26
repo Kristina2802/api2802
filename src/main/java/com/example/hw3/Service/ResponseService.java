@@ -11,6 +11,7 @@ import com.example.hw3.Resposnses.ResponseV2;
 import com.example.hw3.Resposnses.ResponseV3;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 @Service
@@ -26,70 +27,78 @@ public class ResponseService {
     }
 
     public ResponseV1 getResponseV1(RequestV1 request) {
-        String regexpString = ResponseService.likeToRegexp(request.getLikeString());
-        ResponseV1 response = new ResponseV1();
+        String regexpString = ResponseService.likeToRegexp(request.likeString());
+        ArrayList<String> login = new ArrayList<String>();
         for (User user : userRepository.users) {
-            if (user.getLogin().matches(regexpString)) {
-                response.getLogin().add(user.getLogin());
+            if (user.login().matches(regexpString)) {
+                login.add(user.login());
             }
         }
+        ResponseV1 response = new ResponseV1(login);
         return response;
     }
 
     public ResponseV2 getResponseV2(RequestV1 request) {
-        String regexpString = ResponseService.likeToRegexp(request.getLikeString());
-        ResponseV2 response = new ResponseV2();
+        String regexpString = ResponseService.likeToRegexp(request.likeString());
+        ArrayList<String> login = new ArrayList<String>();
         for (User user : userRepository.users) {
-            if (user.getLogin().matches(regexpString)) {
-                response.getLogin().add(user.getLogin());
+            if (user.login().matches(regexpString)) {
+                login.add(user.login());
             }
         }
-        response.setCount((long) userRepository.users.size());
+        Long count = (long) userRepository.users.size();
+        ResponseV2 response = new ResponseV2(login, count);
         return response;
     }
 
     public ResponseV3 getResponseV3(RequestV1 request) {
-        String regexpString = ResponseService.likeToRegexp(request.getLikeString());
-        ResponseV3 response = new ResponseV3();
+        String regexpString = ResponseService.likeToRegexp(request.likeString());
+        ArrayList<String> login = new ArrayList<String>();
+        ArrayList<UserResponse> users = new ArrayList<UserResponse>();
         for (User user : userRepository.users) {
-            if (user.getLogin().matches(regexpString)) {
-                response.getLogin().add(user.getLogin());
-                UserResponse addUser = new UserResponse(user.getLogin(), user.getName(), user.getSurname());
-                response.getUsers().add(addUser);
+            if (user.login().matches(regexpString)) {
+                login.add(user.login());
+                UserResponse addUser = new UserResponse(user.login(), user.name(), user.surname());
+                users.add(addUser);
             }
         }
-        response.setCount((long) userRepository.users.size());
+        Long count = (long) userRepository.users.size();
+        ResponseV3 response = new ResponseV3(login, count, users);
         return response;
     }
 
     public ResponseV3 getResponseV4(RequestV4 request) {
-        String regexpString = ResponseService.likeToRegexp(request.getLikeString());
-        ResponseV3 response = new ResponseV3();
+        String regexpString = ResponseService.likeToRegexp(request.likeString());
+        ArrayList<String> login = new ArrayList<String>();
+        ArrayList<UserResponse> users = new ArrayList<UserResponse>();
         for (User user : userRepository.users) {
-            if (user.getLogin().matches(regexpString)) {
-                response.getLogin().add(user.getLogin());
-                UserResponse addUser = new UserResponse(user.getLogin(), user.getName(), user.getSurname());
-                response.getUsers().add(addUser);
+            if (user.login().matches(regexpString)) {
+                login.add(user.login());
+                UserResponse addUser = new UserResponse(user.login(), user.name(), user.surname());
+                users.add(addUser);
             }
         }
-        response.setCount((long) userRepository.users.size());
+        Long count = (long) userRepository.users.size();
+        ResponseV3 response = new ResponseV3(login, count, users);
         return response;
     }
 
     public ResponseV3 getResponseV5(RequestV5 request) {
-        String regexpString = ResponseService.likeToRegexp(request.getLikeString());
-        ResponseV3 response = new ResponseV3();
+        String regexpString = ResponseService.likeToRegexp(request.likeString());
+        ArrayList<String> login = new ArrayList<String>();
+        ArrayList<UserResponse> users = new ArrayList<UserResponse>();
         for (User user : userRepository.users) {
-            if (user.getLogin().matches(regexpString) && (request.getSurname() == null ||
-                    Objects.equals(user.getSurname(), request.getSurname())) &&
-                    (request.getLowAge() == null || user.getAge() >= request.getLowAge()) &&
-                    (request.getUpAge() == null || user.getAge() <= request.getUpAge())) {
-                response.getLogin().add(user.getLogin());
-                UserResponse addUser = new UserResponse(user.getLogin(), user.getName(), user.getSurname());
-                response.getUsers().add(addUser);
+            if (user.login().matches(regexpString) && (request.surname() == null ||
+                    Objects.equals(user.surname(), request.surname())) &&
+                    (request.lowAge() == null || user.age() >= request.lowAge()) &&
+                    (request.upAge() == null || user.age() <= request.upAge())) {
+                login.add(user.login());
+                UserResponse addUser = new UserResponse(user.login(), user.name(), user.surname());
+                users.add(addUser);
             }
         }
-        response.setCount((long) userRepository.users.size());
+        Long count = (long) userRepository.users.size();
+        ResponseV3 response = new ResponseV3(login, count, users);
         return response;
     }
 }
