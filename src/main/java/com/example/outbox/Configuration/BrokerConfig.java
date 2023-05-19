@@ -1,12 +1,13 @@
 package com.example.outbox.Configuration;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
+
+@EnableScheduling
 @Configuration
-@Slf4j
 public class BrokerConfig {
     public static final String QUEUE_NAME1 = "queue1";
 
